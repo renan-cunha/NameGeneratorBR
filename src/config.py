@@ -1,3 +1,9 @@
 import os
 
-PROCESSED_FILE_PATH = os.path.join("data", "processed", "nomes_processed.txt")
+START_CHAR = "_"
+END_CHAR = "."
+ALPHABET = [START_CHAR] + list("ABCDEFGHIJKLMNOPQRSTUVWXYZ") + [END_CHAR]
+UNIGRAM_FILE_PATH = os.path.join("data", "processed", "unigrams.txt")
+BIGRAM_FILE_PATH = os.path.join("data", "processed", "bigrams.npy")
+RAW_NAMES_FILE_PATH = os.path.join("data", "raw", "nomes.csv")
+MINIMUM_LENGTH_NAME = 3
