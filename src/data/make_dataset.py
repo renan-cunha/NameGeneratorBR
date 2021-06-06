@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
-import click
-import logging
 from pathlib import Path
-from dotenv import find_dotenv, load_dotenv
+import logging
+import os
 
+import click
+import pandas as pd
+from tqdm import tqdm
+
+from dotenv import find_dotenv, load_dotenv
+from src.data.transform_names_file import transform_names_file
+from src.config import PROCESSED_FILE_PATH
 
 @click.command()
 @click.argument('input_filepath', type=click.Path(exists=True))
@@ -14,7 +20,16 @@ def main(input_filepath, output_filepath):
     """
     logger = logging.getLogger(__name__)
     logger.info('making final data set from raw data')
+    
+    csv_file_path = os.path.join(input_filepath, "nomes.csv")
+    df = pd.read_csv(csv_file_path, dtype={"first_name": str, "frequency_total": int})
+    df = df.sort_values("first_name")
+    names_series = transform_names_file(df)
 
+    with open(PROCESSED_FILE_PATH, "w", encoding="utf-8") as f:
+        for name in tqdm(names_series):
+            f.write(f"{name}\n")
+            
 
 if __name__ == '__main__':
     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
