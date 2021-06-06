@@ -3,6 +3,7 @@ import pandas as pd
 
 from src import config
 from src import util
+from typing import List
 
 class CharacterNGram:
 
@@ -38,8 +39,8 @@ class CharacterNGram:
         first_name_col = frequency_names['first_name']
         frequency_names['first_name'] = prefix + first_name_col + config.END_CHAR
 
-    def predict(self) -> str:
-        result = config.START_CHAR * self.num_context
+    def predict(self, context: str = "") -> str:
+        result = config.START_CHAR * self.num_context + context.upper()
         while True:
             context_freq_array = self.get_context_freq_array(result)
             context_prob_array = context_freq_array / context_freq_array.sum()
@@ -63,11 +64,14 @@ class CharacterNGram:
             context_freq_array = self.freq_array
         return context_freq_array
 
+    #def sample(self, number: int, context: str = "") -> List[str]:
+
+
 
 if __name__ == "__main__":
     freq_array = pd.read_csv(config.RAW_NAMES_FILE_PATH)
     character_n_gram = CharacterNGram(num_context=2)
     character_n_gram.fit(freq_array)
     for i in range(10):
-        print(character_n_gram.predict())
+        print(character_n_gram.predict("tak"))
     
