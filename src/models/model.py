@@ -66,7 +66,12 @@ class CharacterNGram:
 
     def sample(self, number: int, max_attempts: int = None,
                context: str = "") -> Set[str]:
-        
+        if max_attempts < number:
+            raise ValueError(f"max_attemps shoud be greater than or equal to" 
+                             f"number")        
+        if not context.isalpha():
+            raise ValueError("Context should contain only letters")         
+
         result = set()
         attempts = 0
         while len(result) < number:
