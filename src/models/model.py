@@ -3,7 +3,7 @@ import pandas as pd
 
 from src import config
 from src import util
-from typing import List
+from typing import Set
 
 class CharacterNGram:
 
@@ -15,7 +15,7 @@ class CharacterNGram:
         
         self.freq_array = self.create_freq_array()
 
-        for name, count in freq_array[['first_name', 'frequency_total']].itertuples(index=False):
+        for name, count in frequency_names[['first_name', 'frequency_total']].itertuples(index=False):
             for index in range(self.num_context, len(name)):
                 pair_idx = self.get_context_chair_idx(name, index)
                 self.freq_array[pair_idx] += count
@@ -64,14 +64,24 @@ class CharacterNGram:
             context_freq_array = self.freq_array
         return context_freq_array
 
-    #def sample(self, number: int, context: str = "") -> List[str]:
-
+    def sample(self, number: int, max_attempts: int = None,
+               context: str = "") -> Set[str]:
+        
+        result = set()
+        attempts = 0
+        while len(result) < number:
+            new_name = self.predict(context=context)
+            result.add(new_name)
+            attempts += 1
+            if max_attempts != None and attempts == max_attempts:
+                break
+        return result
 
 
 if __name__ == "__main__":
     freq_array = pd.read_csv(config.RAW_NAMES_FILE_PATH)
-    character_n_gram = CharacterNGram(num_context=2)
+    character_n_gram = CharacterNGram(num_context=3)
     character_n_gram.fit(freq_array)
-    for i in range(10):
-        print(character_n_gram.predict("tak"))
+    for i in character_n_gram.sample(5, context="phi"):
+        print(i)
     
