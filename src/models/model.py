@@ -110,5 +110,5 @@ if __name__ == "__main__":
     freq_array = pd.read_csv(config.RAW_NAMES_FILE_PATH)
     character_n_gram = CharacterNGram(context_size=4, random_state=42)
     character_n_gram.fit(freq_array)
-    print(character_n_gram.sample(5, context="clei"))
+    print(character_n_gram.sample(5, context="clo", max_attempts=10))
     
