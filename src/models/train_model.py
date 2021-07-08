@@ -10,28 +10,27 @@ from tqdm import tqdm
 from src import config
 from src import util
 
+
 class CharacterNGram:
 
-    def __init__(self, context_size: int, random_state: int = None) -> None:
+    def __init__(self, context_size: int) -> None:
         self.context_size = context_size
         self.freq_arrays = [self.create_freq_array(x) for x in range(self.context_size, -1, -1)]
-        if random_state != None:
-            np.random.seed(random_state)
 
     def fit(self, frequency_names: pd.DataFrame) -> None:
-    
+
         for index, array in enumerate(self.freq_arrays):
             self.freq_arrays[index] = self.__populate_freq_array(array,
                                                                  frequency_names)
 
     def __populate_freq_array(self, array: np.ndarray,
                               frequency_names: pd.DataFrame) -> np.ndarray:
-        
+
         context_size = len(array.shape) - 1
         frequency_names_copy = frequency_names.copy()
         frequency_names_copy = self.add_word_borders(frequency_names_copy,
                                                      context_size)
-        
+
         for name, count in frequency_names_copy[['first_name', 'frequency_total']].itertuples(index=False):
             for index in range(context_size, len(name)):
                 pair_idx = self.get_context_chair_idx(name, index, context_size)
@@ -61,7 +60,9 @@ class CharacterNGram:
         result_df['first_name'] = prefix + first_name_col + config.END_CHAR
         return result_df
 
-    def predict(self, context: str = "") -> str:
+    def predict(self, context: str = "", random_state: int = None) -> str:
+        if random_state is not None:
+            np.random.seed(random_state)
         
         if len(context) > 0 and not context.isalpha():
             raise ValueError("Context should contain only letters")         
@@ -110,6 +111,7 @@ class CharacterNGram:
                 break
         return result
 
+
 @click.command()
 @click.option("--context_sizes", "-cs", multiple=True, 
               help=f"Context size used to train the model. More than one" 
@@ -119,8 +121,7 @@ def main(context_sizes):
     print("Training Models")
     for context_size in tqdm(context_sizes):
         context_size = int(context_size)
-        character_n_gram = CharacterNGram(context_size=context_size, 
-                                          random_state=42)
+        character_n_gram = CharacterNGram(context_size=context_size)
         character_n_gram.fit(freq_array)
         file_name = f"n_gram_context_size_{context_size}.pkl"
         file_path = os.path.join(config.MODELS_DIR, file_name)
