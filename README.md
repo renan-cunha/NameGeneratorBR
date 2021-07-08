@@ -164,4 +164,4 @@ Renan Cunha - renancunhafonseca@gmail.com
 ## Acknowledgements
 
 If you are curious about Language Models and Natural Language Processing in general, I highly recommend
-Jurafsky's drafts of [Speech and Language Processing 3rd edition](https://web.stanford.edu/~jurafsky/slp3/) and also his [classes](https://www.youtube.com/channel/UC_48v322owNVtORXuMeRmpA).
+Jurafsky's drafts of [Speech and Language Processing 3rd edition](https://web.stanford.edu/~jurafsky/slp3/) and his [classes](https://www.youtube.com/channel/UC_48v322owNVtORXuMeRmpA).
