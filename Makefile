@@ -1,4 +1,4 @@
-.PHONY: clean data lint requirements sync_data_to_s3 sync_data_from_s3 train_model
+.PHONY: clean data lint requirements train_model
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -27,7 +27,7 @@ requirements: test_environment
 
 
 ## Train Model
-train_model: sync_data_from_s3
+train_model: requirements
 	$(PYTHON_INTERPRETER) src/models/train_model.py -cs 0 -cs 1 -cs 2 -cs 3 -cs 4
 
 ## Delete all compiled Python files
@@ -39,21 +39,6 @@ clean:
 lint:
 	flake8 src
 
-## Upload Data to S3
-sync_data_to_s3:
-ifeq (default,$(PROFILE))
-	aws s3 sync data/ s3://$(BUCKET)/data/
-else
-	aws s3 sync data/ s3://$(BUCKET)/data/ --profile $(PROFILE)
-endif
-
-## Download Data from S3
-sync_data_from_s3: requirements
-ifeq (default,$(PROFILE))
-	aws s3 sync s3://$(BUCKET)/data/ data/
-else
-	aws s3 sync s3://$(BUCKET)/data/ data/ --profile $(PROFILE)
-endif
 
 ## Set up python interpreter environment
 create_environment:
