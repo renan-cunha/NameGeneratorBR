@@ -60,14 +60,14 @@ class CharacterNGram:
         result_df['first_name'] = prefix + first_name_col + config.END_CHAR
         return result_df
 
-    def predict(self, context: str = "", random_state: int = None) -> str:
+    def predict(self, prefix: str = "", random_state: int = None) -> str:
         if random_state is not None:
             np.random.seed(random_state)
         
-        if len(context) > 0 and not context.isalpha():
+        if len(prefix) > 0 and not prefix.isalpha():
             raise ValueError("Context should contain only letters")         
         
-        result = config.START_CHAR * self.context_size + context.upper()
+        result = config.START_CHAR * self.context_size + prefix.upper()
         while True:
             context_freq_array = self.get_context_freq_array(result)
             context_prob_array = context_freq_array / context_freq_array.sum()
@@ -104,7 +104,7 @@ class CharacterNGram:
         result = set()
         attempts = 0
         while len(result) < number:
-            new_name = self.predict(context=context)
+            new_name = self.predict(prefix=context)
             result.add(new_name)
             attempts += 1
             if max_attempts != None and attempts == max_attempts:
