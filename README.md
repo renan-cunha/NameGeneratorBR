@@ -106,14 +106,11 @@ infer the next one), awkward and cool names start to appear :)
 2. Create environment
     ```
     make create_environment
+    conda activate NameGeneratorBR
     ```
 3. Install requirmeents
     ```
     make requirements
-    ```
-4. Activate the environment
-    ```
-    conda activate NameGeneratorBR
     ```
 
 <!-- USAGE EXAMPLES -->
