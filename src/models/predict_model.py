@@ -19,7 +19,8 @@ def main(context_size, prefix, seed):
         with open(file_path, "rb") as f:
             model = pickle.load(f)
     except:
-        raise FileNotFoundError(f"No model trained with context size equal to {context_size}")
+        raise FileNotFoundError(f"No model trained with context size equal to {context_size}."
+                                f"Use a context size from 0 to 4.")
     name = model.predict(prefix=prefix, random_state=seed)
     print(f"Predicted the name: {name}\n"
           f"Prefix: {prefix.upper() if prefix else 'None'}\n"
