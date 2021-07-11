@@ -83,7 +83,7 @@ However, if we use a small enough context size (e.g., number of previous letters
 infer the next one), awkward and cool names start to appear :)
 
 <!-- ABOUT THE PROJECT -->
-## Build With
+## Built With
 
 * [Cookiecutter Data Science Project Structure](https://drivendata.github.io/cookiecutter-data-science/)
 * Python Data Science Tools (Pandas, Numpy, etc)
