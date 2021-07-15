@@ -44,10 +44,15 @@
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#local-installation">Local Installation</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
+      <ul>
+        <li><a href="#generate-new-names">Generate New Names</a></li>
+        <li><a href="#reproduce-training">Reproduce Training</a></li>
+        <li><a href="#docker">Docker</a></li>
+      </ul>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
@@ -80,7 +85,7 @@ It works by guessing next letters based on the previous ones. For instance,
 what is the most probable name given that the name starts with *Pau...*? For the
 English language it will probably be *Paul*, while for Portuguese it will be *Paulo*.
 However, if we use a small enough context size (e.g., number of previous letters to 
-infer the next one), awkward and cool names start to appear :)
+infer the next one), awkward and cool names start to appear =)
 
 <!-- ABOUT THE PROJECT -->
 ## Built With
@@ -91,12 +96,18 @@ infer the next one), awkward and cool names start to appear :)
 <!-- GETTING STARTED -->
 ## Getting Started
 
+You can use this project with docker or install locally in your machine
+
 ### Prerequisites
+
+* Docker 
+
+or
 
 * Linux/WSL
 * conda
 
-### Installation
+### Local Installation
 
 1. Clone the repo
     ```sh
@@ -134,8 +145,7 @@ Options:
   -s, --seed INTEGER           Seed to reproduce experiments (OPTIONAL)
   --help                       Show this message and exit.
 ```
-
-Example:
+Ex:
 ```
 (NameGeneratorBR) renan@DESKTOP-AD25DOI:~/git/NameGeneratorBR$ python src/models/predict_model.py -cs 4 -p pau -s 0
 Predicted the name: PAULO
@@ -144,9 +154,32 @@ Context Size: 4
 Seed: 0
 ```
 
-### Reproduce Pipeline
+### Reproduce Training
 
-To reproduce the training, use the command ```make train_model```
+To reproduce the training, use the command below
+
+````
+```make train_model```
+````
+
+### Docker
+
+Pull the image
+
+```
+docker pull renancunha97/name-generator-br
+```
+
+And make new names
+
+```
+renan@DESKTOP-AD25DOI:~$ docker run renancunha97/name-generator-br -cs 4 -p pau -s 0
+Predicted the name: PAULO
+Prefix: PAU
+Context Size: 4
+Seed: 0  
+```
+
 
 <!-- LICENSE -->
 ## License
