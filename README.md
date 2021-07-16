@@ -159,7 +159,7 @@ Seed: 0
 To reproduce the training, use the command below
 
 ````
-```make train_model```
+make train_model
 ````
 
 ### Docker
