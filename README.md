@@ -105,7 +105,7 @@ You can use this project with docker or install locally in your machine
 or
 
 * Linux/WSL
-* conda
+* [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/)
 
 ### Local Installation
 
