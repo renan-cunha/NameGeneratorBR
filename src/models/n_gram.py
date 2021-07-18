@@ -1,4 +1,4 @@
-from typing import Set, Tuple
+from typing import Set
 
 import numpy as np
 import pandas as pd
@@ -37,7 +37,7 @@ class CharacterNGram:
         return array
 
     def get_context_chair_idx(self, name: str, index: int,
-                              context_size: int) -> Tuple[int]:
+                              context_size: int) -> tuple:
         """Returns a tuple with the indices from the frequency array that
            corresponds to the context/name pair"""
         current_char = name[index]
@@ -103,7 +103,7 @@ class CharacterNGram:
             raise ValueError("max_attemps shoud be greater than or equal to"
                              "number")
 
-        result = set()
+        result: Set[str] = set()
         attempts = 0
         while len(result) < number:
             new_name = self.predict(prefix=context)
