@@ -61,6 +61,11 @@ class CharacterNGram:
         result_df['first_name'] = prefix + first_name_col + config.END_CHAR
         return result_df
 
+    def get_word_probability(self, word: str) -> float:
+        """Gets the probability that the N-Gram model assigns to the word"""
+        pass
+
+
     def predict(self, prefix: str = "", random_state: int = None) -> str:
         if random_state is not None:
             np.random.seed(random_state)
@@ -68,7 +73,7 @@ class CharacterNGram:
         if len(prefix) > 0 and not prefix.isalpha():
             raise ValueError("Context should contain only letters")
 
-        result = config.START_CHAR * self.context_size + prefix.upper()
+        result = self.get_start_char() + prefix.upper()
         while True:
             context_freq_array = self.get_context_freq_array(result)
             context_prob_array = context_freq_array / context_freq_array.sum()
@@ -81,6 +86,10 @@ class CharacterNGram:
             elif word_length >= config.MINIMUM_LENGTH_NAME:
                 break
         return result[self.context_size:]
+
+    def get_start_char(self) -> str:
+        result = config.START_CHAR * self.context_size
+        return result
 
     def get_context_freq_array(self, result: str,
                                back_off: int = 0) -> np.ndarray:
