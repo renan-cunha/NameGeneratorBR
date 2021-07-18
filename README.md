@@ -18,26 +18,18 @@
 
 
 <!-- PROJECT LOGO -->
-<br />
-<p align="center">
+# Brazilian Name Generator
 
-  <h3 align="center">Brazilian Name Generator</h3>
-
-  <p align="center">
-    Create cool and awkward names with Language Models!
-  </p>
-</p>
-
-
+Create cool and awkward names with Language Models!
+## Table of Contents
 
 <!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary>Table of Contents</summary>
+ 
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-        <li><a href="#build-with">Built With</a></li>
+        <li><a href="#built-with">Built With</a></li>
     </ul>
     </li>
     <li>
@@ -57,7 +49,7 @@
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
-</details>
+
 
 
 
@@ -105,7 +97,7 @@ You can use this project with docker or install locally in your machine
 or
 
 * Linux/WSL
-* conda
+* [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/)
 
 ### Local Installation
 
@@ -159,7 +151,7 @@ Seed: 0
 To reproduce the training, use the command below
 
 ````
-```make train_model```
+make train_model
 ````
 
 ### Docker
