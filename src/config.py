@@ -8,3 +8,4 @@ BIGRAM_FILE_PATH = os.path.join("data", "processed", "bigrams.npy")
 RAW_NAMES_FILE_PATH = os.path.join("data", "raw", "nomes.csv")
 MODELS_DIR = "models"
 MINIMUM_LENGTH_NAME = 3
+MAXIMUM_LENGTH_NAME = 30

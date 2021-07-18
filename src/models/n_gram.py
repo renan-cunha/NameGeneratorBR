@@ -105,8 +105,11 @@ class CharacterNGram:
             word_length = (len(result) - self.context_size)
             if new_letter != config.END_CHAR:
                 result += new_letter
+                if word_length > config.MAXIMUM_LENGTH_NAME:
+                    break
             elif word_length >= config.MINIMUM_LENGTH_NAME:
                 break
+
         return result[self.context_size:]
 
     def get_start_char(self) -> str:
@@ -149,6 +152,5 @@ class CharacterNGram:
 if __name__ == "__main__":
     with open("models/n_gram_context_size_1.pkl", 'rb') as f:
         model = pickle.load(f)
-    string = "paulo"
-    print(model.get_word_probability(string))
-    print(model.get_word_probability("xrtfgbjn"))
+    while True:
+        print(model.predict(random_state=42))
