@@ -2,6 +2,7 @@ from typing import Set
 
 import numpy as np
 import pandas as pd
+import pickle
 
 from src import config
 from src import util
@@ -63,8 +64,29 @@ class CharacterNGram:
 
     def get_word_probability(self, word: str) -> float:
         """Gets the probability that the N-Gram model assigns to the word"""
-        pass
+        word = self.get_start_char() + word + config.END_CHAR
+        word = word.upper()
+        probability = 0
+        for index, letter in enumerate(word[self.context_size:]):
+            context = word[index: index + self.context_size]
+            back_off = 0
+            letter_idx = util.char_to_idx(letter)
+            letter_context_prob = self.get_letter_context_prob(context,
+                                                               back_off,
+                                                               letter_idx)
+            probability += np.log(letter_context_prob)
+        return np.exp(probability)
 
+    def get_letter_context_prob(self, context, back_off, letter_idx):
+        while True:
+            context_freq_array = self.get_context_freq_array(context,
+                                                             back_off=back_off)
+            context_prob_array = context_freq_array / context_freq_array.sum()
+            letter_context_probability = context_prob_array[letter_idx]
+            if letter_context_probability != 0:
+                break
+            back_off += 1
+        return letter_context_probability
 
     def predict(self, prefix: str = "", random_state: int = None) -> str:
         if random_state is not None:
@@ -88,13 +110,16 @@ class CharacterNGram:
         return result[self.context_size:]
 
     def get_start_char(self) -> str:
-        result = config.START_CHAR * self.context_size
-        return result
+        """Returns the blanking start char to add in the beginning of the
+        word"""
+        return config.START_CHAR * self.context_size
 
     def get_context_freq_array(self, result: str,
                                back_off: int = 0) -> np.ndarray:
         """Gets the frequency array for the most recent context"""
-        if self.context_size > 0:
+        if self.context_size == 0 or back_off == self.context_size:
+            context_freq_array = self.freq_arrays[-1]
+        else:
             context = result[-self.context_size + back_off:]
             context_idx = util.sentence_to_idx(context)
             context_freq_array = self.freq_arrays[back_off][tuple(context_idx)]
@@ -102,8 +127,6 @@ class CharacterNGram:
                 print(f"{result}, {back_off}")
                 return self.get_context_freq_array(result,
                                                    back_off=back_off + 1)
-        elif self.context_size == 0 or back_off == self.context_size:
-            context_freq_array = self.freq_arrays[-1]
         return context_freq_array
 
     def sample(self, number: int, max_attempts: int = None,
@@ -121,3 +144,11 @@ class CharacterNGram:
             if max_attempts is not None and attempts == max_attempts:
                 break
         return result
+
+
+if __name__ == "__main__":
+    with open("models/n_gram_context_size_1.pkl", 'rb') as f:
+        model = pickle.load(f)
+    string = "paulo"
+    print(model.get_word_probability(string))
+    print(model.get_word_probability("xrtfgbjn"))
