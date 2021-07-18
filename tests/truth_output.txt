@@ -1,0 +1,4 @@
+Predicted the name: PAULO
+Prefix: PAU
+Context Size: 4
+Seed: 0
