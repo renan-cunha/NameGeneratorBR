@@ -1,4 +1,4 @@
-from typing import Set
+from typing import Set, List
 
 import numpy as np
 import pandas as pd
@@ -89,6 +89,14 @@ class CharacterNGram:
         if back_off > 0:
             letter_context_probability * 0.4 * back_off
         return letter_context_probability
+
+    def evaluate(self, sentences: List[str]) -> float:
+        """Evaluates the model in test sentences using perplexity"""
+        num_chars = sum([len(x) + 1 for x in sentences])
+        probs = np.array([self.get_word_probability(x) for x in sentences])
+        log_probs = np.log(probs)
+        test_prob = np.sum(np.exp(log_probs))
+        return (1/test_prob) ** (1/num_chars)
 
     def predict(self, prefix: str = "", random_state: int = None) -> str:
         if random_state is not None:
