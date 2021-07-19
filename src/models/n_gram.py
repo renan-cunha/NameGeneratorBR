@@ -86,6 +86,8 @@ class CharacterNGram:
             if letter_context_probability != 0:
                 break
             back_off += 1
+        if back_off > 0:
+            letter_context_probability * 0.4 * back_off
         return letter_context_probability
 
     def predict(self, prefix: str = "", random_state: int = None) -> str:
